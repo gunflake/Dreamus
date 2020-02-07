@@ -1,5 +1,6 @@
 package com.example.demo.album;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class Song {
     @GeneratedValue
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "albumNo")
     private Album album;

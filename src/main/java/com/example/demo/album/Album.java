@@ -1,5 +1,6 @@
 package com.example.demo.album;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +14,16 @@ import java.util.List;
 public class Album {
 
     @Id @GeneratedValue
-    private Long albumNo;
+    private Long id;
 
     @Column
     private String title;
 
-    @OneToMany(mappedBy = "album")
+    @JsonBackReference
+    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
     private List<Song> songs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @OneToMany(mappedBy = "album")
     private List<AlbumLocale> albumLocales = new ArrayList<>();
 }
