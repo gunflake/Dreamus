@@ -105,7 +105,7 @@ Location = "https://SERVER_URL/playlists/{playlistNo}  (요청한 playlistNo)
 플레이리스트 유저 정보랑 요청 유저 정보가 다를 경우
 {
     "status": "BAD_REQUEST",
-    "message": "플레이리스트에 추가해야할 앨범 혹은 곡이 하나 이상 이어야합니다."
+    "message": "플레이리스트 유저 정보랑 요청한 유저 정보가 같지 않습니다. 플레이리스트 번호를 확인해주세요."
 }
 ```
 
