@@ -20,7 +20,7 @@ public class PlaylistService {
     public ResponsePlaylist findPlaylist(Long userNo, Long playlistNo){
         List<Song> songs = new ArrayList<>();
 
-        Playlist playlist = playlistRepository.findByUserNoAndPlaylistNo(userNo, playlistNo).orElseThrow(NotFoundPlaylist::new);
+        Playlist playlist = playlistRepository.findByUserNoAndPlaylistNoAndFlag(userNo, playlistNo, 1).orElseThrow(NotFoundPlaylist::new);
 
         for (PlaylistItem playlistItem : playlist.getPlaylistItems()) {
             songs.add(playlistItem.getSong());
@@ -28,6 +28,7 @@ public class PlaylistService {
 
         List<SearchSong> searchSongs = albumService.setSearchSong(songs);
         ResponsePlaylist responsePlaylist = new ResponsePlaylist();
+        responsePlaylist.setPlaylistNo(playlistNo);
         responsePlaylist.setTitle(playlist.getTitle());
         responsePlaylist.setUserNo(playlist.getUserNo());
         responsePlaylist.setCount(searchSongs.size());

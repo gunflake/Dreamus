@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-    List<Playlist> findAllByUserNo(Long userNo);
+    List<Playlist> findAllByUserNoAndFlag(Long userNo, Integer flag);
 
-    Optional<Playlist> findByUserNoAndPlaylistNo(Long userNo, Long playlistNo);
+    Optional<Playlist> findByUserNoAndPlaylistNoAndFlag(Long userNo, Long playlistNo, Integer flag);
 }

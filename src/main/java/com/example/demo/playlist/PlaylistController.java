@@ -95,7 +95,7 @@ public class PlaylistController {
     public ResponseEntity<List<ResponsePlaylist>> findAllPlaylist(@RequestHeader("userNo") Long userNo) {
 
         List<ResponsePlaylist> responsePlaylists = new ArrayList<>();
-        List<Playlist> playlists = playlistRepository.findAllByUserNo(userNo);
+        List<Playlist> playlists = playlistRepository.findAllByUserNoAndFlag(userNo, 1);
 
         for (Playlist playlist : playlists) {
             List<Song> songs = new ArrayList<>();
@@ -106,6 +106,7 @@ public class PlaylistController {
 
             List<SearchSong> searchSongs = albumService.setSearchSong(songs);
             ResponsePlaylist responsePlaylist = new ResponsePlaylist();
+            responsePlaylist.setPlaylistNo(playlist.getPlaylistNo());
             responsePlaylist.setTitle(playlist.getTitle());
             responsePlaylist.setUserNo(playlist.getUserNo());
             responsePlaylist.setCount(searchSongs.size());
@@ -130,12 +131,19 @@ public class PlaylistController {
 
         Playlist playlist = playlistRepository.findById(playlistNo).orElseThrow(NotFoundPlaylist::new);
 
-        // todo: UserNo랑 PlayListNo의 UserNo 비교
         if (!playlist.getUserNo().equals(userNo)) {
             return badRequest().body(new ResponseError(HttpStatus.BAD_REQUEST, "플레이리스트 유저 정보랑 요청한 유저 정보가 같지 않습니다. 플레이리스트 번호를 확인해주세요"));
         }
 
-        playlistRepository.delete(playlist);
+        playlist.setFlag(2);
+
+        List<PlaylistItem> playlistItems = playlist.getPlaylistItems();
+        for(PlaylistItem playlistItem : playlistItems){
+            playlistItem.setFlag(2);
+        }
+
+        playlistRepository.save(playlist);
+        playlistItemRepository.saveAll(playlistItems);
 
         return noContent().build();
     }

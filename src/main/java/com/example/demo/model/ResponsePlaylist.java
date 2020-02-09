@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ResponsePlaylist {
+    private Long playlistNo;
     private String title;
     private Integer count;
     private Long userNo;

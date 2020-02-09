@@ -43,7 +43,7 @@ public class AlbumController {
         List<Album> albums;
 
         // Album 검색
-        if (locale.equals("all")) {
+        if (locale.toLowerCase().equals("all")) {
             albums = albumRepository.findAllByTitleIgnoreCaseContaining(title);
         }else{
             albums = albumRepository.findAllByTitleIgnoreCaseContainingAndAlbumLocalesContaining(title, locale);

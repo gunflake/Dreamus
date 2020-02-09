@@ -66,6 +66,7 @@ Location = "https://SERVER_URL/playlists/{playlistNo}  (요청한 playlistNo)
 **Response Body(Success)**
 ```
 {
+    "playlistNo": 416,
     "title": "test playlist",
     "count": 11,
     "userNo": 1,
@@ -124,6 +125,7 @@ userNo      | long | (필수) user 번호 | Request Header에 담아서 전송
 **Response(Success)**
 ```
 {
+    "playlistNo": 416,
     "title": "test playlist",
     "count": 11,
     "userNo": 3,

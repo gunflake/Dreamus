@@ -27,6 +27,7 @@ public class Song {
     @Column(nullable = false)
     private Integer length;
 
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)

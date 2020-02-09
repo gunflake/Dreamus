@@ -17,7 +17,7 @@ public class Album {
     @Id @GeneratedValue
     private Long albumNo;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     @JsonBackReference

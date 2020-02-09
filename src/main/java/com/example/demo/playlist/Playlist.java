@@ -15,14 +15,22 @@ import java.util.List;
 @JsonIgnoreProperties("playlistItems")
 public class Playlist {
     @Id @GeneratedValue
-    private Long playlistNo;
+    private Long playlistNo; //playlist 번호
 
-    private Long userNo;
+    @Column(nullable = false)
+    private Long userNo; // 유저 번호
 
-    private String title;
+    @Column(nullable = false)
+    private String title; // 플레이리스트 제목
+
+    @Column(nullable = false)
+    private Integer flag; // 삭제 여부 (1:정상, 2:삭제)
 
     @JsonBackReference
-    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
     private List<PlaylistItem> playlistItems = new ArrayList<>();
 
+    public Playlist() {
+        this.flag = 1;
+    }
 }

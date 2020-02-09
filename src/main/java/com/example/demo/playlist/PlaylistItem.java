@@ -25,6 +25,9 @@ public class PlaylistItem {
     @JoinColumn(name = "songNo")
     private Song song;
 
+    @Column(nullable = false)
+    private Integer flag; // 삭제 여부 (1: 정상, 2: 삭제)
+
     public void setPlaylist(Playlist playlist) {
         if(this.playlist != null){
             this.playlist.getPlaylistItems().remove(this);
@@ -41,4 +44,7 @@ public class PlaylistItem {
         this.song.getPlaylistItems().add(this);
     }
 
+    public PlaylistItem() {
+        this.flag = 1;
+    }
 }
