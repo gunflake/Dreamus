@@ -1,10 +1,15 @@
-package com.example.demo.album;
+package com.example.demo.song;
 
+import com.example.demo.album.Album;
+import com.example.demo.playlist.PlaylistItem;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,7 +17,7 @@ import javax.persistence.*;
 public class Song {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long songNo;
 
     @JsonManagedReference
     @ManyToOne
@@ -22,6 +27,10 @@ public class Song {
     private Short length;
     private String title;
     private Short track;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "song")
+    private List<PlaylistItem> playlistItems = new ArrayList<>();
 
     public void setAlbum(Album album) {
         if(this.album != null){

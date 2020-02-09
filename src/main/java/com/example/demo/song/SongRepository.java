@@ -1,4 +1,4 @@
-package com.example.demo.album;
+package com.example.demo.song;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

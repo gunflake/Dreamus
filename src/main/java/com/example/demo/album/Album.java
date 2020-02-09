@@ -1,5 +1,6 @@
 package com.example.demo.album;
 
+import com.example.demo.song.Song;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Album {
 
     @Id @GeneratedValue
-    private Long id;
+    private Long albumNo;
 
     @Column
     private String title;

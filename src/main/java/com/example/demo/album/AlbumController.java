@@ -1,11 +1,12 @@
 package com.example.demo.album;
 
 import com.example.demo.model.*;
+import com.example.demo.song.Song;
+import com.example.demo.song.SongRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
@@ -34,18 +34,24 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
 
+    /**
+     *
+     * @param title 검색어
+     * @param locale 검색을 요청하는 사용자의 지역
+     * @return 검색된 노래 및 앨범 정보
+     */
     @GetMapping("/search")
     public ResponseEntity<ResponseSearchData> searchAlbumAndSong(@RequestParam("title") String title, @RequestParam("locale") String locale) {
+
+        // Todo : parameter 없을 떄 에러 나오는거 처리하는거 추가
 
         List<Song> songs;
         List<Album> albums;
 
         // Album 검색
         if (locale.equals("all")) {
-            log.info("all");
             albums = albumRepository.findAllByTitleContaining(title);
         }else{
-            log.info("others");
             albums = albumRepository.findAllByTitleContainingAndAlbumLocalesContaining("%" + title + "%", locale);
         }
 
@@ -63,14 +69,20 @@ public class AlbumController {
         return ok(responseSearchData);
     }
 
+    /**
+     *
+     * @param locale 검색을 요청하는 사용자의 지역
+     * @param page 요청할 page
+     * @return 페이지에 따른 앨범 정보
+     */
     @GetMapping("/albums")
-    public ResponseEntity<ResponseAlbums> getAlbums(@RequestParam("locale") String locale, @RequestParam("page") int page){
+    public ResponseEntity<ResponseAlbum> getAlbums(@RequestParam("locale") String locale, @RequestParam("page") int page){
 
         page -= 1;
 
         Page<Album> findAlbums;
-        ResponseAlbums responseAlbums = new ResponseAlbums();
-        responseAlbums.setStatusCode(200);
+        ResponseAlbum responseAlbum = new ResponseAlbum();
+        responseAlbum.setStatusCode(200);
 
         // Page Setting
         SearchPage searchPage = new SearchPage();
@@ -82,23 +94,26 @@ public class AlbumController {
             findAlbums = albumRepository.findAllByAlbumLocalesContaining(locale, PageRequest.of(page, 10));
         }
 
-        log.info("getSize: "+findAlbums.getTotalElements());
-
         searchPage.setFirst(page <= 0 || findAlbums.getTotalElements() == 0 ? null : url+1);
         searchPage.setPrev(page <= 0 || page > findAlbums.getTotalPages() ? null : url+page);
         searchPage.setLast(page >= findAlbums.getTotalPages()-1 ? null : url+findAlbums.getTotalPages());
         searchPage.setNext(page >= findAlbums.getTotalPages()-1 || page < 0 ? null : url+(page+2));
 
-        responseAlbums.setPages(searchPage);
+        responseAlbum.setPages(searchPage);
 
         // Album Setting
         List<Album> albums = findAlbums.get().collect(Collectors.toList());
 
-        responseAlbums.setAlbums(albumService.setSearchAlbum(albums));
+        responseAlbum.setAlbums(albumService.setSearchAlbum(albums));
 
-        return ok(responseAlbums);
+        return ok(responseAlbum);
     }
 
+    /**
+     *
+     * @param saveAlbumList 저장할 노래 JSON 데이터(제공 데이터 예시 포맷으로 전송)
+     * @return 201 상태값 응답 및 No content Body
+     */
     @PostMapping("/albums")
     public ResponseEntity saveAlbumAndSong(@RequestBody List<SaveAlbum> saveAlbumList) {
         List<Album> albums = new ArrayList<>();
@@ -110,7 +125,7 @@ public class AlbumController {
 
             //Song
             List<Song> songs = new ArrayList<>();
-            for (SaveAlbum.Song getSong : data.getSongs()) {
+            for (SaveSong getSong : data.getSongs()) {
                 Song newSong = new Song();
                 newSong.setTitle(getSong.getTitle());
                 newSong.setLength((short) getSong.getLength());
