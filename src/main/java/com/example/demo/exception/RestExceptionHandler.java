@@ -16,4 +16,5 @@ public class RestExceptionHandler {
     public ResponseEntity invalidAccount(NotFoundPlaylist ex) {
         return badRequest().body(new ResponseError(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
+
 }

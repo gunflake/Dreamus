@@ -3,8 +3,8 @@ package com.example.demo.album;
 import com.example.demo.model.*;
 import com.example.demo.song.Song;
 import com.example.demo.song.SongRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +20,13 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AlbumController {
 
-    @Autowired
-    private AlbumRepository albumRepository;
-
-    @Autowired
-    private SongRepository songRepository;
-
-    @Autowired
-    private AlbumLocaleRepository albumLocaleRepository;
-
-    @Autowired
-    private AlbumService albumService;
+    private final AlbumRepository albumRepository;
+    private final SongRepository songRepository;
+    private final AlbumLocaleRepository albumLocaleRepository;
+    private final AlbumService albumService;
 
     /**
      *
@@ -128,8 +122,8 @@ public class AlbumController {
             for (SaveSong getSong : data.getSongs()) {
                 Song newSong = new Song();
                 newSong.setTitle(getSong.getTitle());
-                newSong.setLength((short) getSong.getLength());
-                newSong.setTrack((short) getSong.getTrack());
+                newSong.setLength(getSong.getLength());
+                newSong.setTrack(getSong.getTrack());
                 newSong.setAlbum(album);
                 songs.add(newSong);
             }

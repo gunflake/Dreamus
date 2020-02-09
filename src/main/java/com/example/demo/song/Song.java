@@ -24,9 +24,13 @@ public class Song {
     @JoinColumn(name = "albumNo")
     private Album album;
 
-    private Short length;
+    @Column(nullable = false)
+    private Integer length;
+
     private String title;
-    private Short track;
+
+    @Column(nullable = false)
+    private Integer track;
 
     @JsonBackReference
     @OneToMany(mappedBy = "song")

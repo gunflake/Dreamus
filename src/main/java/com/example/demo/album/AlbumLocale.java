@@ -19,7 +19,7 @@ public class AlbumLocale {
     @JoinColumn(name = "albumNo")
     private Album album;
 
-    @Column
+    @Column(length = 3, nullable = false)
     private String name;
 
     public void setAlbum(Album album) {

@@ -61,8 +61,8 @@ public class SongRepositoryTest {
             for (SaveSong getSong : data.getSongs()) {
                 Song newSong = new Song();
                 newSong.setTitle(getSong.getTitle());
-                newSong.setLength((short) getSong.getLength());
-                newSong.setTrack((short) getSong.getTrack());
+                newSong.setLength(getSong.getLength());
+                newSong.setTrack(getSong.getTrack());
                 newSong.setAlbum(album);
                 songs.add(newSong);
             }

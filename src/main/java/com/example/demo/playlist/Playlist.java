@@ -25,5 +25,4 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<PlaylistItem> playlistItems = new ArrayList<>();
 
-
 }

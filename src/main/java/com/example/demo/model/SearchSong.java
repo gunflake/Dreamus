@@ -8,7 +8,7 @@ import lombok.Setter;
 public class SearchSong {
     private String title;
     private Long id;
-    private short track;
-    private short length;
+    private Integer track;
+    private Integer length;
 
 }
