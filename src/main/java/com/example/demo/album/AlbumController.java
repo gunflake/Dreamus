@@ -50,13 +50,13 @@ public class AlbumController {
 
         // Album 검색
         if (locale.equals("all")) {
-            albums = albumRepository.findAllByTitleContaining(title);
+            albums = albumRepository.findAllByTitleIgnoreCaseContaining(title);
         }else{
-            albums = albumRepository.findAllByTitleContainingAndAlbumLocalesContaining("%" + title + "%", locale);
+            albums = albumRepository.findAllByTitleIgnoreCaseContainingAndAlbumLocalesContaining(title, locale);
         }
 
         // Song 검색
-        songs = songRepository.findAllByTitleContaining(title);
+        songs = songRepository.findAllByTitleIgnoreCaseContaining(title);
 
         List<SearchAlbum> searchAlbums = albumService.setSearchAlbum(albums);
         List<SearchSong> searchSongs = albumService.setSearchSong(songs);

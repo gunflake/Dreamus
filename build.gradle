@@ -22,6 +22,11 @@ dependencies {
     //Lombock 추가
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    testCompileOnly 'org.projectlombok:lombok:1.18.10'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    // Test DB
+    testRuntimeOnly('com.h2database:h2')
 
     //JPA 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

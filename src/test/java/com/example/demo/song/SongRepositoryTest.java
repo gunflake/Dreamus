@@ -1,9 +1,11 @@
-package com.example.demo.album;
+package com.example.demo.song;
 
+import com.example.demo.album.Album;
+import com.example.demo.album.AlbumLocale;
+import com.example.demo.album.AlbumLocaleRepository;
+import com.example.demo.album.AlbumRepository;
 import com.example.demo.model.SaveAlbum;
 import com.example.demo.model.SaveSong;
-import com.example.demo.song.Song;
-import com.example.demo.song.SongRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,22 +14,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @Slf4j
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class AlbumRepositoryTest {
+public class SongRepositoryTest {
 
     @Autowired
     private AlbumRepository albumRepository;
@@ -91,27 +91,9 @@ public class AlbumRepositoryTest {
 
     @Test
     public void findAllByTitleContaining() {
-        List<Album> getAlbums = albumRepository.findAllByTitleIgnoreCaseContaining("please");
-        List<Song> songs = getAlbums.get(0).getSongs();
-        assertThat(getAlbums.size()).isEqualTo(1);
-        assertThat(songs.size()).isEqualTo(11);
+        List<Song> please = songRepository.findAllByTitleIgnoreCaseContaining("PLEASE");
+        log.info(please.size()+"  size");
+        assertThat(please.size()).isEqualTo(11);
 
-    }
-
-    @Test
-    public void findAllByTitleContainingAndAlbumLocalesContaining() {
-        List<Album> getAlbums = albumRepository.findAllByTitleIgnoreCaseContainingAndAlbumLocalesContaining("please", "JA");
-        assertThat(getAlbums.size()).isEqualTo(1);
-    }
-
-    @Test
-    public void findAllByAlbumLocalesContaining() {
-        Page<Album> findAlbums = albumRepository.findAllByAlbumLocalesContaining("Ja", PageRequest.of(1, 10));
-        List<Album> albums = findAlbums.get().collect(Collectors.toList());
-        assertThat(albums.size()).isEqualTo(2);
-
-        findAlbums = albumRepository.findAll(PageRequest.of(3, 10));
-        albums = findAlbums.get().collect(Collectors.toList());
-        assertThat(albums.size()).isEqualTo(1);
     }
 }

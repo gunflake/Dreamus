@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
-    List<Album> findAllByTitleContaining(String title);
+    List<Album> findAllByTitleIgnoreCaseContaining(String title);
 
-    @Query("select a from Album a inner join a.albumLocales l where a.title like :title and l.name = :localeName")
-    List<Album> findAllByTitleContainingAndAlbumLocalesContaining(String title, String localeName);
+    @Query("select a from Album a inner join a.albumLocales l where upper(a.title) like upper(concat('%',:title,'%')) and upper(l.name) = upper(:localeName)")
+    List<Album> findAllByTitleIgnoreCaseContainingAndAlbumLocalesContaining(String title, String localeName);
 
-    @Query("select a from Album a inner join a.albumLocales l where l.name = :localeName")
+    @Query("select a from Album a inner join a.albumLocales l where upper(l.name) = upper(:localeName)")
     Page<Album> findAllByAlbumLocalesContaining(String localeName, Pageable pageable);
 }
